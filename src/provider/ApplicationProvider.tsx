@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 
+import { ReactQueryProvider } from './ReactQueryProvider'
 import { ReduxProvider } from './ReduxProvider'
 
 interface IApplicationProvider {
@@ -9,7 +10,9 @@ interface IApplicationProvider {
 export function ApplicationProvider({ children }: IApplicationProvider) {
 	return (
 		<Fragment>
-			<ReduxProvider>{children}</ReduxProvider>
+			<ReduxProvider>
+				<ReactQueryProvider>{children}</ReactQueryProvider>
+			</ReduxProvider>
 		</Fragment>
 	)
 }
