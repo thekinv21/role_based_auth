@@ -12,6 +12,26 @@ Role-based authorization and authentication are important to secure React applic
 
 
 
+
+```bash
+  ADMİN:
+  
+  username: admin
+  password: pass
+  
+
+  USER:
+ 
+  username: user2
+  password: pass
+```
+
+
+
+
+
+
+
 ###   Essential packages for Role Based Auth ( Gerekli Paketler )
 
 ![packaejson](https://github.com/thekinv21/react_role_based_auth/assets/92122363/0f05be70-ca9e-4dcb-8b94-0bee888e5fac)
