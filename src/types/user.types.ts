@@ -1,7 +1,13 @@
 export interface IUser {
-	username: string
+	createdBy: string
+	updatedBy: string
+	id: string
 	name: string
 	surname: string
-	isActive: boolean
-	avatarPath: string
+	username: string
+	email: string
+	resetPassword: boolean
+	profileImageUrl: string
+	roles: string[]
+	enabled: boolean
 }
