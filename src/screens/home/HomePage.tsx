@@ -4,7 +4,7 @@ import reactLogo from '@/assets/react.svg'
 
 import styles from './HomePage.module.scss'
 
-export default function App() {
+export function HomePage() {
 	return (
 		<section className='flex h-screen w-full flex-col items-center justify-center'>
 			<div className='mb-5 flex items-center justify-center gap-5'>
