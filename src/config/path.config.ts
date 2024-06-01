@@ -3,5 +3,6 @@ export const PATH_URL = {
 		LOGIN: '/auth/login',
 		REGISTER: '/auth/register'
 	},
-	HOME: '/'
+	HOME: '/',
+	ADMIN: '/admin'
 }
