@@ -1,20 +1,34 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, RouteObject } from 'react-router-dom'
 
 import { PATH_URL } from '@/config/path.config'
 
-import HomePage from '@/screens/home/HomePage'
+import { ProtectedRoute } from './ProtectedRoute'
+import { AdminPage } from '@/screens/admin/AdminPage'
+import { LoginPage } from '@/screens/auth/login'
+import { HomePage } from '@/screens/home/HomePage'
 
-export const router = createBrowserRouter([
+export const routes: RouteObject[] = [
 	{
 		path: PATH_URL.HOME,
-		element: <HomePage />
+		element: (
+			<ProtectedRoute>
+				<HomePage />
+			</ProtectedRoute>
+		)
+	},
+
+	{
+		path: PATH_URL.ADMIN,
+		element: (
+			<ProtectedRoute>
+				<AdminPage />
+			</ProtectedRoute>
+		)
 	},
 	{
 		path: PATH_URL.AUTH.LOGIN,
-		element: <div>Login Page</div>
-	},
-	{
-		path: PATH_URL.AUTH.REGISTER,
-		element: <div>Login Page</div>
+		element: <LoginPage />
 	}
-])
+]
+
+export const router = createBrowserRouter(routes)
