@@ -1,10 +1,19 @@
-import axios, { type CreateAxiosDefaults } from 'axios'
+import axios from 'axios'
+
+import { IRefrestToken } from '@/types/auth.types'
+
+import { PATH_URL } from '@/config/path.config'
 
 import { authService } from '@/services/auth.service'
 
-import { getAccessToken, getRefreshToken } from '@/utils/auth.util'
+import {
+	getAccessToken,
+	getRefreshToken,
+	removeFromCookie,
+	saveTokens
+} from '@/utils/auth.util'
 
-const options: CreateAxiosDefaults = {
+const options = {
 	baseURL: `${import.meta.env.VITE_REACT_APP_URL_TEST}`,
 	headers: {
 		'Content-Type': 'application/json'
@@ -16,35 +25,36 @@ const axiosWithAuth = axios.create(options)
 
 axiosWithAuth.interceptors.request.use(config => {
 	const accessToken = getAccessToken()
-
-	if (config?.headers && accessToken)
+	if (config.headers && accessToken) {
 		config.headers.Authorization = `Bearer ${accessToken}`
-
+	}
 	return config
 })
 
 axiosWithAuth.interceptors.response.use(
-	config => config,
+	response => response,
 	async error => {
-		const originalRequest = error.config
-
-		if (
-			error?.response?.status === 401 &&
-			error.config &&
-			!error.config._isRetry
-		) {
-			originalRequest._isRetry = true
+		const config = error.config
+		if (error.response && error.response.status === 401 && !config._retry) {
 			try {
-				const refreshToken = getRefreshToken()
+				const request: IRefrestToken = {
+					refreshToken: getRefreshToken() as string
+				}
 
-				await authService.getNewTokens(refreshToken as string)
-				return axiosWithAuth.request(originalRequest)
+				const response = await authService.getNewTokens(
+					request as IRefrestToken
+				)
+
+				if (response.status >= 200 && response.status < 300) {
+					await removeFromCookie()
+					await saveTokens(response.data.content)
+				}
 			} catch (error) {
-				// if (errorCatch(error) === 'jwt expired') {}
+				removeFromCookie()
+				window.location.href = PATH_URL.AUTH.LOGIN
 			}
 		}
-
-		throw error
+		return Promise.reject(error)
 	}
 )
 
