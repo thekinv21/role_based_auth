@@ -1,6 +1,6 @@
-import { ILogin, IRegister } from '@/types/auth.types'
+import { ILogin, IRefrestToken, IRegister } from '@/types/auth.types'
 
-import { axiosClassic, axiosWithAuth } from '@/api/interceptors'
+import { axiosClassic } from '@/api/interceptors'
 
 class AuthService {
 	private BASE_URL = '/api/auth'
@@ -18,10 +18,10 @@ class AuthService {
 		return response
 	}
 
-	async getNewTokens(refreshToken: string) {
-		const response = await axiosWithAuth.post(
+	async getNewTokens(data: IRefrestToken) {
+		const response = await axiosClassic.post(
 			this.BASE_URL + `/refresh-token`,
-			refreshToken
+			data
 		)
 		return response
 	}

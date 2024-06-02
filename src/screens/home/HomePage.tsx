@@ -1,4 +1,5 @@
 import viteLogo from '/vite.svg'
+import { useQuery } from '@tanstack/react-query'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 
 import reactLogo from '@/assets/react.svg'
@@ -8,10 +9,11 @@ import { PATH_URL } from '@/config/path.config'
 import { useCustomAuth } from '@/hooks/useCustomAuth'
 import { useCustomDispatch } from '@/hooks/useCustomDispatch'
 
+import { testService } from '@/services/test.service'
+
 import { removeFromCookie } from '@/utils/auth.util'
 
 import styles from './HomePage.module.scss'
-import { IRoleEnum } from '@/enum/auth.enum'
 
 type TypeNavLink = {
 	title: string
@@ -19,12 +21,8 @@ type TypeNavLink = {
 }
 
 export function HomePage() {
-	const { jwtToken, user } = useCustomAuth()
+	const { jwtToken, isAdmin } = useCustomAuth()
 	const { reduxLoggedOut } = useCustomDispatch()
-
-	const isAdminOrSuperAdmin =
-		user?.roles.includes(IRoleEnum.ADMIN) ||
-		user?.roles.includes(IRoleEnum.SUPERADMIN)
 
 	const navigate = useNavigate()
 	const location = useLocation()
@@ -49,6 +47,16 @@ export function HomePage() {
 			url: '#'
 		}
 	]
+
+	const { isFetching, isLoading } = useQuery({
+		queryKey: ['get-test-with-auth'],
+		queryFn: () => testService.getForSelect(),
+		refetchInterval: 45000
+	})
+
+	if (isLoading || isFetching) {
+		return <div>Loading....</div>
+	}
 
 	return (
 		<section className='flex h-screen w-full flex-col items-center justify-center'>
@@ -91,7 +99,7 @@ export function HomePage() {
 					{jwtToken ? 'Logout' : 'Login'}
 				</button>
 
-				{isAdminOrSuperAdmin && (
+				{isAdmin && (
 					<button
 						type='button'
 						onClick={() => {

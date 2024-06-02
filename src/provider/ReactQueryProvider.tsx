@@ -4,7 +4,7 @@ interface IReactQueryProvider {
 	children: React.ReactNode
 }
 
-const qeuryClient = new QueryClient({
+const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchOnWindowFocus: false
@@ -14,7 +14,7 @@ const qeuryClient = new QueryClient({
 
 export function ReactQueryProvider({ children }: IReactQueryProvider) {
 	return (
-		<QueryClientProvider client={qeuryClient}>
+		<QueryClientProvider client={queryClient}>
 			{children}
 		</QueryClientProvider>
 	)

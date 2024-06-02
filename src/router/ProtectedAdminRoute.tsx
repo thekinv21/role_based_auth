@@ -13,7 +13,7 @@ export function ProtectedAdminRoute({ children }: IProtectedAdminRoute) {
 	// for get all information from auth
 	const { jwtToken, isAdmin } = useCustomAuth()
 
-	// for navigations
+	// for navigation
 	const navigate = useNavigate()
 
 	// for get current location and pathname

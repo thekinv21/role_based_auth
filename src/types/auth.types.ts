@@ -17,3 +17,7 @@ export interface IRegister {
 	name?: string
 	surname?: string
 }
+
+export interface IRefrestToken {
+	refreshToken: string
+}
